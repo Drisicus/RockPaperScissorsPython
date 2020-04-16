@@ -1,9 +1,14 @@
 import pickle
 import socket
 from _thread import *
+from RockPaperSissors.network import SERVER
+from RockPaperSissors.network import PORT
 
 from RockPaperSissors.game import Game
 from Version2.player import Player
+
+server = SERVER
+port = PORT
 
 # Store the IP addresses of the clients
 connected = set()
@@ -25,7 +30,7 @@ def threaded_client(connection, player, gameId):
                 game = games[gameId]
 
                 if data == "reset":
-                    game.reset()
+                    game.resetWent()
 
                 elif data != "get": # Move
                     game.play(player, data)
@@ -47,8 +52,6 @@ def threaded_client(connection, player, gameId):
     connection.close()
 
 
-server = "192.168.1.37"
-port = 5555
 
 # AF_INET -> ipv4, SOCK_STREAM -> TCP
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
